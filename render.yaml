@@ -1,0 +1,34 @@
+services:
+  # Backend API Service
+  - type: web
+    name: shopping-assistant-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false  # Set this in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false  # Set after frontend deployment
+
+  # Frontend Static Site
+  - type: web
+    name: shopping-assistant-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    rootDir: frontend
+    envVars:
+      - key: VUE_APP_API_URL
+        value: https://shopping-assistant-backend.onrender.com
