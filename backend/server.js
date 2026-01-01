@@ -60,6 +60,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Handle preflight OPTIONS requests explicitly
+app.options('*', cors());
+
 // Request logging
 app.use((req, res, next) => {
     logger.info(`${req.method} ${req.path}`, {
